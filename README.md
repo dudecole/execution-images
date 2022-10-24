@@ -1,27 +1,28 @@
 
 <!---TODO: 
-- build requirements.txt for setting up ansible-buidler (build-requirements.txt)
-- be able to clone this repository and build...?
-  - create a GH repo for builders?..> 
+***Would like to be able to clone this repository and build***
+
 - How to tag image with ansible-builder.. 
 - Build tests for the container image build process
   - playbooks to test out the newly added collections/python modules
 -->
 
 # Building Custom Execution Images
-
-## Description
 This is a prodecural document for building custom Ansible Execution Images. 
 
-## Requirments
-
-##
-
-   
+## Description
 <!--
-The new architewcture for ansible automation platform 
+The new architewcture for Ansible Automation Platform 
 requires the use of container images to run Ansible automation 
-code.  Because there are many available collections to use via Ansible Galaxy,
+code.  Ansible Automation Platform (AAP) installation bundle comes with three different
+Red Hat supported container images, for an working OOBE.
+
+In order for AAP to be able to run the Ansible automation code, the container images
+should include all of the Ansible collections and Python libraries to be able to run any 
+Ansible automation code using a supported collection of plugins and python libraries. 
+
+
+Because there are many available collections to use via Ansible Galaxy,
 and many of those collections are created by the Ansible Community, 
 the included container images are limited to only the Red Hat supported/published 
 collections.  Because of this, there may be some requirements to add additional 
@@ -32,10 +33,8 @@ AAP, and other environments that run the Ansible code without the option to
 download and install collections during runtime. 
 
 -->
-Ansible Automation Platform (AAP) installation bundle comes with three different
-Red Hat supported container images, for use by AAP
 
-
+   
 ## TOC
 - Requirements
 - Container images
@@ -46,26 +45,28 @@ Red Hat supported container images, for use by AAP
 
 ## Requirements
 - Linux 
-	- Docker Engine
-	- Podman engine
+  - Docker Engine
+  - Podman engine
+    - Podman - (allows for auth'ing into invalid 509 ssl)
 - Python3.6 (removed) - yum remove python3.6 
 - Python3.9 - yum install python39
-- Podman - (allows for auth'ing into invalid 509 ssl)
 
-<!-- https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_installing-and-using-python_configuring-basic-system-settings -->
 - python39-devel - yum install python39-devel
 - Ansible Builder - pip install ansible-builder
 
-## Developer Environment
+
+## Getting Started
+
+### Prepare Developer Environment
+<!--
 - Build Requirments - 
 	- virtualenv
 	- pip3 (for python3.9)
 	- build-requirements.txt (available in repository...)
-
-## Lets Begin shall we (GETTING STARTED..?)
 - Python Version
+-->
 
-Verify Python Version
+### Verify Python Version
 
 ```console
 [root@workstation1]# python3 --version
@@ -260,15 +261,11 @@ Storing signatures
 ### Install 
 
 
-[root@workstation1]# 
-(venv) [root@workstation1]#
-```
-
-- 
-
-##
-
-
-
 ---
+## Resources
+
+- https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_installing-and-using-python_configuring-basic-system-settings -->
+
+
+
 ## Build Notes
