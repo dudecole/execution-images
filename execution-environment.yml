@@ -8,15 +8,20 @@ dependencies:
   galaxy: requirements.yml
   python: requirements.txt
 
-additional_build_steps:
-  prepend: |
-    RUN microdnf install libcurl-devel gcc python39-devel openssl-devel gpgme-devel python3-dmidecode python3-rpm python3-syspurpose
-    RUN pip3 install pycurl
-    RUN microdnf install libxml2-devel
-  append:
-    - RUN echo JUST FINISHING UP... HANG TIGHT 
-    - RUN ls -la /runner
-    - RUN ls -la /output
+#<!--
+# These aren't required, so they can be excluded/commented 
+# if not needed.
+# -->
+#
+#additional_build_steps:
+#  prepend: |
+#    RUN microdnf install libcurl-devel gcc python39-devel openssl-devel gpgme-devel python3-dmidecode python3-rpm python3-syspurpose
+#    RUN pip3 install pycurl
+#    RUN microdnf install libxml2-devel
+#  append:
+#    - RUN echo JUST FINISHING UP... HANG TIGHT 
+#    - RUN ls -la /runner
+#    - RUN ls -la /output
 
 
 #<!--
