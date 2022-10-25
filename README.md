@@ -11,17 +11,24 @@
 This is a prodecural document for building custom Ansible Execution Images. 
 
 ## Description
-<!--
-The new architewcture for Ansible Automation Platform 
+The new architecture for Ansible Automation Platform 
 requires the use of container images to run Ansible automation 
 code.  Ansible Automation Platform (AAP) installation bundle comes with three different
 Red Hat supported container images, for an working OOBE.
 
+- [Default Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest)
+- [Minimial Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest)
+- [Ansible Engine 2.9 Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-29-rhel8:latest)
+
 In order for AAP to be able to run the Ansible automation code, the container images
-should include all of the Ansible collections and Python libraries to be able to run any 
-Ansible automation code using a supported collection of plugins and python libraries. 
+should include all of the Red Hat supported Ansible collections and Python libraries required 
+for an OOB Experience.
 
+This document covers the use cases that require addititions of other internally developed
+or community collections to be added to the Execution Images to allow the consumption
+of the non-supported Red Hat collections.
 
+<!--
 Because there are many available collections to use via Ansible Galaxy,
 and many of those collections are created by the Ansible Community, 
 the included container images are limited to only the Red Hat supported/published 
@@ -36,7 +43,8 @@ download and install collections during runtime.
 
    
 ## TOC
-- Requirements
+- [Requirements](#requirements)
+- [Developer Environment](#developer-environment)
 - Container images
 - Developer Environment
 - Build Image
@@ -44,10 +52,9 @@ download and install collections during runtime.
 - virtualenv(if prefer to keep python environments clean)
 
 ## Requirements
-- Linux 
-  - Docker Engine
+- Linux
   - Podman engine
-    - Podman - (allows for auth'ing into invalid 509 ssl)
+  - Docker Engine
 - Python3.6 (removed) - yum remove python3.6 
 - Python3.9 - yum install python39
 
@@ -57,7 +64,19 @@ download and install collections during runtime.
 
 ## Getting Started
 
-### Prepare Developer Environment
+### Developer Environment
+Virtual Environment
+- virtualenv
+PIP
+- pip3
+Python 
+- Python >=3.8
+Ansible Runner
+- ansible-runner
+Ansible Builder
+- ansible-builder
+Ansible Navigator
+- ansible-navigator
 <!--
 - Build Requirments - 
 	- virtualenv
