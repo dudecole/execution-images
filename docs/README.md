@@ -8,7 +8,7 @@
 -->
 
 # Building Custom Execution Images
-This is a prodecural document for building custom Ansible Execution Images. 
+Prodecural document for building custom Ansible Execution Images. 
 
 ## Description
 The new architecture for Ansible Automation Platform 
@@ -16,9 +16,17 @@ requires the use of container images to run Ansible automation
 code.  Ansible Automation Platform (AAP) installation bundle comes with three different
 Red Hat supported container images, for an working OOBE.
 
-- [Default Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest)
-- [Minimial Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest)
-- [Ansible Engine 2.9 Execution Environment](registry.redhat.io/ansible-automation-platform-22/ee-29-rhel8:latest)
+**Default Execution Environment**
+        
+    registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest
+
+**Minimial Execution Environment**
+
+    registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest
+
+**Ansible Engine 2.9 Execution Environment**
+
+    registry.redhat.io/ansible-automation-platform-22/ee-29-rhel8:latest
 
 In order for AAP to be able to run the Ansible automation code, the container images
 should include all of the Red Hat supported Ansible collections and Python libraries required 
