@@ -2,7 +2,6 @@
 <!---TODO: 
 ***Would like to be able to clone this repository and build***
 
-- How to tag image with ansible-builder.. 
 - Build tests for the container image build process
   - playbooks to test out the newly added collections/python modules
 -->
@@ -36,73 +35,30 @@ This document covers the use cases that require addititions of other internally 
 or community collections to be added to the Execution Images to allow the consumption
 of the non-supported Red Hat collections.
 
-<!--
-Because there are many available collections to use via Ansible Galaxy,
-and many of those collections are created by the Ansible Community, 
-the included container images are limited to only the Red Hat supported/published 
-collections.  Because of this, there may be some requirements to add additional 
-collections and/or plugins to the container images in order to allow 
-for consistent end-to-end runtimes between local development environments, and
-environments run from different sources.  Some of these sources could be CICD, 
-AAP, and other environments that run the Ansible code without the option to 
-download and install collections during runtime. 
-
--->
-
-   
-## TOC
+## Table Of Contents
 - [Requirements](#requirements)
+- [Getting Started](#getting-started)
 - [Developer Environment](#developer-environment)
-- Container images
-- Developer Environment
-- Build Image
-- Push Image
-- virtualenv(if prefer to keep python environments clean)
+- [Build Image](#build-image)
+- [Push Image](#push-image)
+- [Tests](#test)
 
 ## Requirements
-- Linux
-  - Podman engine
-  - Docker Engine
-- Python3.6 (removed) - yum remove python3.6 
-- Python3.9 - yum install python39
-
-- python39-devel - yum install python39-devel
-- Ansible Builder - pip install ansible-builder
-
+- Developer Environment
+- Container Engine(s)
+- Python
+- Ansible Tools
 
 ## Getting Started
 
-### Developer Environment
-Virtual Environment
-- virtualenv
-PIP
-- pip3
-Python 
-- Python >=3.8
-Ansible Runner
-- ansible-runner
-Ansible Builder
-- ansible-builder
-Ansible Navigator
-- ansible-navigator
-<!--
-- Build Requirments - 
-	- virtualenv
-	- pip3 (for python3.9)
-	- build-requirements.txt (available in repository...)
-- Python Version
--->
+This section pertains to building a custom Ansible Execution Environment container image.
+The remaining steps assert that all the [`requirements`](#requirements) have been met.
 
-### Verify Python Version
-
-```console
-[root@workstation1]# python3 --version
-
-Python 3.9.7
-```
+### Login to Developer Machine
 
 
 ### Login To Registry
+
 Login registry.redhat.io
 
 ```console
@@ -110,41 +66,6 @@ Login registry.redhat.io
 Username: rhat-email@customername.com
 Password: 
 Login Succeeded!
-```
-### Create Python Virtual Environment
-Create an virtual environment if the machine is being used by multiple developers, 
-or to avoid any python package installation conflicts that could over-write any
-other python packages that were specific to something other than building
-Ansible execution environment images.
-
-### Create Virtual ENvironment
-
-```console
-[root@workstation1]# python3 -m virtualenv venv
-
-created virtual environment CPython3.9.7.final.0-64 in 2705ms
-  creator CPython3Posix(dest=/root/execution-environments/venv, clear=False, no_vcs_ignore=False, global=False)
-  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/root/.local/share/virtualenv)
-    added seed packages: pip==22.2.2, setuptools==65.3.0, wheel==0.37.1
-  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
-```
-
-### Activate Virtual Environment
-
-```console
-[root@workstation1]# . venv/bin/activate
-(venv) [root@workstation1]#
-
-```
-
-### Install Python Requirements for Ansible Builder
-
-```console
-(venv) [root@workstation1]# pip install -r builder-requirements.txt
-
-Installing collected packages: ansible,.. .
-..
-Successfully installed MarkupSafe-2.1.1 Parsley-1.3 ansible-builder-1.1.0 ansible-navigator-2.2.0 ansible-runner-2.2.1 attrs-22.1.0 bindep-2.11.0 cffi-1.15.1 distro-1.8.0 docutils-0.19 jinja2-3.1.2 jsonschema-4.16.0 lockfile-0.12.2 onigurumacffi-1.2.0 packaging-21.3 pbr-5.11.0 pexpect-4.8.0 ptyprocess-0.7.0 pycparser-2.21 pyparsing-3.0.9 pyrsistent-0.18.1 python-daemon-2.3.1 pyyaml-6.0 requirements-parser-0.5.0 six-1.16.0 types-setuptools-65.5.0.1 tzdata-2022.5
 ```
 ### Make changes to the Collections 
 
@@ -160,12 +81,14 @@ collections:
 ```
 
 ### Make changes to the Python Packages
+
 ```console
 ```
 
 ### Build the image
+
 ```console
-(venv) [root@workstation1]# ansible-builder build -v 3
+(venv) [root@workstation1]# ansible-builder build -v 3 --tag=automation-hub.address.com/registry-repo-here/custom-ee-image:dev
 
 Ansible Builder is building your execution environment image. Tags: 
 File context/_build/requirements.yml is already up-to-date.
@@ -178,14 +101,9 @@ Running command:
   .
 
 ```
-### Deactivate the Virtual Environment
-```console
 
-(venv) [root@workstation1]# deactivate
-
-
-```
 ### Tag the image (should be done at the ansible-builder CLI..)
+
 ```console
 [root@workstation1]# podman images
 
@@ -193,16 +111,21 @@ Running command:
 ```
 
 ### Get the image 
+
 ```console
 [root@workstation1]# podman push 
 
 ```
+
 ### Test the image using ansible-runner
+
 ```console
 [root@workstation1]# ansible-runner run ./ -p hello.yml --container-image <new-image-name:dev>
 
 ```
+
 ### Test the image using ansible-navigator
+
 ```console
 [root@workstation1]# ansible-navigator run hello.yml --eei localhost/custom-python-ee:dev
 
@@ -255,10 +178,10 @@ the execution image is ready to be pushed using the same tag <TODO: IMAGE TAG BE
 ```console
 [root@workstation1]# podman tag <imageid> address-of-pah-or-registry/custom-python-ee:test
 
-
 ```
 
-### Push the image
+### Push Image
+
 ```console
 [root@workstation1]# podman push address-of-pah-or-registry/custom-python-ee:test
 
@@ -284,11 +207,14 @@ Storing signatures
 
 ```
 
+### Deactivate the Virtual Environment
 
-### Install 
+```console
+
+(venv) [root@workstation1]# deactivate
+```
 
 
----
 ## Resources
 
 - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_installing-and-using-python_configuring-basic-system-settings -->
@@ -296,3 +222,9 @@ Storing signatures
 
 
 ## Build Notes
+
+
+
+
+
+
